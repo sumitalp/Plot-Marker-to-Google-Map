@@ -52,7 +52,17 @@
                     dataType: 'JSON',
                     success: function(json){
                         $.each(json, function(i, entry){
-                            PlotMarker(entry.latitude, entry.longitude,entry.company_name+": "+entry.title);
+                            if(entry.type == 'factual')
+                                color = 'blue';
+                            else if(entry.type == 'deals')
+                                color = 'green';
+                            else if(entry.type == 'location')
+                                color = '#ff0000';
+                            else if(entry.type == 'hunts_trek' || entry.type == 'hunts_clue')
+                                color = 'purple';
+                            else if(entry.type == 'events')
+                                color = '#ffff00';
+                            PlotMarker(entry.latitude, entry.longitude,entry.company_name+": "+entry.title, color);
                         });
                         
                     },
@@ -62,7 +72,7 @@
                 });
             }
 
-            function PlotMarker(lat, lon, title){
+            function PlotMarker(lat, lon, title, color){
                 var marker = new google.maps.Marker({
                     position: new google.maps.LatLng(lat, lon),
                     map: map,
@@ -71,7 +81,7 @@
                     icon: {
                         // Star
                         path: 'M 0,-24 6,-7 24,-7 10,4 15,21 0,11 -15,21 -10,4 -24,-7 -6,-7 z',
-                        fillColor: '#ffff00',
+                        fillColor: color,
                         fillOpacity: 1,
                         scale: 1/4,
                         strokeColor: '#bd8d2c',
